@@ -1,4 +1,4 @@
-import { FilterQuery, Model, UpdateQuery } from "mongoose";
+import { FilterQuery, Model, UpdateQuery, Document } from "mongoose";
 import { MongoCache, MongoConstructor } from "../typings/types";
 
 export default class Mongo implements MongoConstructor {
@@ -12,7 +12,7 @@ export default class Mongo implements MongoConstructor {
         this.model = params.model;
         this.cache = params.cache;
     };
-    public async find() {
+    public async find(): Promise<Document> {
         let data = this.cache.get(this.sQuery);
         if (!data) {
             data = await this.model.findOne(this.query) ?? await new this.model(this.query).save();
@@ -20,12 +20,12 @@ export default class Mongo implements MongoConstructor {
         }
         return data;
     }
-    public async update(query: UpdateQuery<unknown>) {
+    public async update(query: UpdateQuery<unknown>): Promise<Document> {
         const data = await this.model.findOneAndUpdate(this.query, query, { upsert: true, new: true });
         this.cache.set(this.sQuery, data);
         return data;
     }
-    public async delete() {
+    public async delete(): Promise<Document> {
         const data = await this.model.findOneAndDelete(this.query);
         this.cache.delete(this.sQuery);
         return data;
