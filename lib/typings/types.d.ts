@@ -40,7 +40,9 @@ export interface EventOn {
 }
 export interface MongoConstructor {
     query: FilterQuery<unknown>;
-    model: Model<unknown, unknown, unknown, {}, any>;
+    model: MongoModel;
     cache: Collection<string, Document>;
 }
+export declare type MongoCache = Collection<string, Document>;
+export declare type MongoModel = Model<any> | Model<unknown, unknown, unknown, {}, any>;
 export {};

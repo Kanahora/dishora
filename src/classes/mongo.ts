@@ -1,12 +1,11 @@
-import { FilterQuery, Document, Model, UpdateQuery } from "mongoose";
-import { Collection } from "discord.js";
-import { MongoConstructor } from "../typings/types";
+import { FilterQuery, Model, UpdateQuery } from "mongoose";
+import { MongoCache, MongoConstructor } from "../typings/types";
 
 export default class Mongo implements MongoConstructor {
     public query: FilterQuery<unknown>;
     private sQuery: string;
     public model: Model<unknown, unknown, unknown, {}, any>;
-    public cache: Collection<string, Document>;
+    public cache: MongoCache;
     constructor(params: MongoConstructor) {
         this.query = params.query;
         this.sQuery = JSON.stringify(this.query);

@@ -57,7 +57,9 @@ export interface EventOn {
 // #region Mongo
 export interface MongoConstructor {
     query: FilterQuery<unknown>;
-    model: Model<unknown, unknown, unknown, {}, any>;
+    model: MongoModel;
     cache: Collection<string, Document>;
 }
+export type MongoCache = Collection<string, Document>;
+export type MongoModel = Model<any> | Model<unknown, unknown, unknown, {}, any>;
 // #endregion
