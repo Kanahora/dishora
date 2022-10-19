@@ -33,24 +33,21 @@ export interface CommandConstructor {
     data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup"> | SlashCommandSubcommandsOnlyBuilder;
     cooldown?: number;
     cooldowns?: Collection<string, number>;
-    run: CommandRun;
+    run: Run;
 }
-export interface CommandInteraction extends ChatInputCommandInteraction<"cached"> {
-    client: Client;
-}
-export interface CommandRun {
-    (interaction: CommandInteraction);
+export interface Run {
+    (interaction: ChatInputCommandInteraction<"cached">);
 }
 // #endregion
 
 // #region Event
-export interface EventConstructor {
-    event: keyof ClientEvents | keyof DisTubeEvents;
+export interface EventConstructor<T extends keyof DisTubeEvents | keyof ClientEvents> {
+    event: T;
     music?: boolean;
-    on: EventOn;
+    on: On<T>;
 }
-export interface EventOn {
-    (client: Client, ...args: any[]);
+export interface On<T extends keyof DisTubeEvents | keyof ClientEvents> {
+    (client: Client, ...args: DisTubeEvents[T & keyof DisTubeEvents] | ClientEvents[T & keyof ClientEvents]);
 }
 // #endregion
 

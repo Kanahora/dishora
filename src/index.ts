@@ -2,12 +2,16 @@ import Client from "./classes/client";
 import Command from "./classes/command";
 import Event from "./classes/event";
 import Mongo from "./classes/mongo";
-import { CommandInteraction, MongoCache } from "./typings/types"
+import { MongoCache } from "./typings/types"
+import { Collection, SlashCommandBuilder } from 'discord.js';
 export {
     Client,
     Command,
     Event,
     Mongo,
-    MongoCache,
-    CommandInteraction
+    MongoCache
+};
+export {
+    Collection,
+    SlashCommandBuilder
 };
