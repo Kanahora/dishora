@@ -3,4 +3,4 @@ src/
 .gitignore
 .npmignore
 package-lock.json
-tsconig.json
+tsconfig.json

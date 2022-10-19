@@ -12,4 +12,5 @@ export default class Class extends Discord.Client implements ClientConstructor {
     init(): Promise<void>;
     private mongo;
     private register;
+    loadSlashCommands(version: string): Promise<void>;
 }

@@ -6,6 +6,7 @@ import { promises as fs } from "fs";
 import { ClientConstructor, ClientOptions } from "../typings/types";
 import Command from "./command";
 import Event from "./event";
+import { REST, Routes } from "discord.js";
 
 export default class Class extends Discord.Client implements ClientConstructor {
     public commands: Discord.Collection<string, Command> = new Discord.Collection();
@@ -24,13 +25,13 @@ export default class Class extends Discord.Client implements ClientConstructor {
             });
         };
     };
-    public async init(): Promise<void> {
+    public async init() {
         if (this.options.directories?.commands) await this.register(`${path.dirname(require.main.filename)}/${this.options.directories.commands}`);
         if (this.options.directories?.events) await this.register(`${path.dirname(require.main.filename)}/${this.options.directories.events}`)
         await this.mongo();
         await this.login(this.options.token);
     };
-    private async mongo(): Promise<void> {
+    private async mongo() {
         if (!this.options.mongo) return;
         console.log("Connecting to MongoDB.");
         await mongoose.connect(this.options.mongo);
@@ -52,4 +53,14 @@ export default class Class extends Discord.Client implements ClientConstructor {
             };
         };
     };
+    public async loadSlashCommands(version: string) {
+        // Clearing application commands
+        console.log("Clearing existing application (/) commands.");
+        const rest = new REST({ version }).setToken(this.options.token);
+        console.log("Previous application (/) commands have been cleared.");
+        // Reloading application commands
+        const commands = this.commands.map(command => command.data);
+        await rest.put(Routes.applicationCommands(this.user.id), { body: commands });
+        console.log("Reloaded application (/) commands.");
+    }
 };
