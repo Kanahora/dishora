@@ -26,12 +26,8 @@ export default class Client extends Discord.Client implements ClientConstructor 
         };
     };
     public async init(version: string) {
-        // Registering command directory
-        await this.register(`${path.dirname(require.main.filename)}/${this.options.directories?.commands ?? "commands"}`)
-            .catch(() => console.log("\u001b[31;1mWARNING: \u001b[0mNo command directory found."));
-        // Registering event eirectory
-        await this.register(`${path.dirname(require.main.filename)}/${this.options.directories?.events ?? "events"}`)
-            .catch(() => console.log("\u001b[31;1mWARNING: \u001b[0mNo event directory found."));
+        await this.register(`${path.dirname(require.main.filename)}/${this.options.directories?.commands ?? "commands"}`);
+        await this.register(`${path.dirname(require.main.filename)}/${this.options.directories?.events ?? "events"}`);
         // Attempt connection to MongoDB 
         await this.mongo();
         // Successful discord login
@@ -47,7 +43,7 @@ export default class Client extends Discord.Client implements ClientConstructor 
         console.log("Connected to \u001b[32mMongoDB\u001b[0m!");
     };
     private async register(dir: string) {
-        const folder = await fs.readdir(path.join(dir));
+        const folder = await fs.readdir(path.join(dir)).catch(() => []);
         for (const file of folder) {
             const stat = await fs.lstat(path.join(dir, file));
             if (stat.isDirectory()) this.register(path.join(dir, file));
