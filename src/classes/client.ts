@@ -1,4 +1,4 @@
-import Discord, { Collection, ClientEvents } from "discord.js";
+import Discord, { Collection, ClientEvents, IntentsBitField } from "discord.js";
 import path from "path";
 import DisTube, { DisTubeEvents } from "distube";
 import mongoose from "mongoose";
@@ -11,7 +11,7 @@ import { REST, Routes } from "discord.js";
 export default class Client extends Discord.Client implements ClientConstructor {
     public commands: Collection<string, Command> = new Collection();
     public events: Collection<string, Event<keyof ClientEvents | keyof DisTubeEvents>> = new Collection();
-    public options: ClientOptions;
+    public options: Omit<ClientOptions, "intents"> & { intents: IntentsBitField; };
     public distube?: DisTube = null;
     constructor(options: ClientOptions) {
         super(options);
@@ -31,8 +31,8 @@ export default class Client extends Discord.Client implements ClientConstructor 
         // Attempt connection to MongoDB 
         await this.mongo();
         // Successful discord login
-        this.once("ready", async function (client: Client) {
-            if (client.commands.size) await client.loadSlashCommands(version);
+        this.once("ready", async function (client) {
+            if (this.commands.size) await this.loadSlashCommands(version);
             console.log(`Successfully logged in as \u001b[32m${client.user.tag}\u001b[0m!`);
         });
         await this.login(this.options.token);
