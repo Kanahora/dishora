@@ -9,7 +9,7 @@ import Discord, {
 import Client from "../classes/client";
 import Command from "../classes/command";
 import type { DisTubeEvents, DisTube } from "distube";
-import { FilterQuery, Model, Document } from "mongoose";
+import { FilterQuery, Model, HydratedDocument } from 'mongoose';
 
 // #region Client
 export interface ClientConstructor {
@@ -53,11 +53,10 @@ export interface On<T extends keyof DisTubeEvents | keyof ClientEvents> {
 // #endregion
 
 // #region Mongo
-export interface MongoConstructor {
-    query: FilterQuery<unknown>;
-    model: MongoModel;
-    cache: Collection<string, Document>;
+export interface MongoConstructor<T> {
+    cache?: Cache<T>;
+    model: Model<T>;
+    query?: FilterQuery<T>;
 }
-export type MongoCache = Collection<string, Document>;
-export type MongoModel = Model<any> | Model<unknown, unknown, unknown, {}, any>;
+export interface Cache<T> extends Collection<string, HydratedDocument<T>> {};
 // #endregion

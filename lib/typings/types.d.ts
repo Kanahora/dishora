@@ -1,11 +1,13 @@
-import Discord, { Collection, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, ChatInputCommandInteraction, ClientEvents } from "discord.js";
+import Discord, { Collection, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, ChatInputCommandInteraction, ClientEvents, IntentsBitField } from "discord.js";
 import Client from "../classes/client";
 import Command from "../classes/command";
 import type { DisTubeEvents, DisTube } from "distube";
-import { FilterQuery, Model, Document } from "mongoose";
+import { FilterQuery, Model, HydratedDocument } from 'mongoose';
 export interface ClientConstructor {
     commands: Collection<string, Command>;
-    options: ClientOptions;
+    options: Omit<ClientOptions, "intents"> & {
+        intents: IntentsBitField;
+    };
     distube?: DisTube;
 }
 export interface ClientOptions extends Discord.ClientOptions {
@@ -35,11 +37,11 @@ export interface EventConstructor<T extends keyof DisTubeEvents | keyof ClientEv
 export interface On<T extends keyof DisTubeEvents | keyof ClientEvents> {
     (client: Client, ...args: (ClientEvents & DisTubeEvents)[T]): any;
 }
-export interface MongoConstructor {
-    query: FilterQuery<unknown>;
-    model: MongoModel;
-    cache: Collection<string, Document>;
+export interface MongoConstructor<T> {
+    cache?: Cache<T>;
+    model: Model<T>;
+    query?: FilterQuery<T>;
 }
-export declare type MongoCache = Collection<string, Document>;
-export declare type MongoModel = Model<any> | Model<unknown, unknown, unknown, {}, any>;
+export interface Cache<T> extends Collection<string, HydratedDocument<T>> {
+}
 export {};
