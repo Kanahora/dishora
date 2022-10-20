@@ -27,7 +27,7 @@ const client = new Client({
         events: "./events"
     }
 });
-client.init();
+client.init("10");
 ```
 
 ### Creating a new Event ###
