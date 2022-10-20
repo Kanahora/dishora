@@ -1,6 +1,6 @@
 {
 	"name": "dishora",
-	"version": "1.0.2-beta-v2",
+	"version": "1.0.2-beta",
 	"description": "A framework extension for discord.js",
 	"main": "lib/index.js",
 	"keywords": [
