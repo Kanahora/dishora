@@ -1,11 +1,11 @@
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, Collection } from "discord.js";
-import { CommandConstructor, CommandRun } from "../typings/types";
+import { CommandConstructor, Run } from "../typings/types";
 
 export default class Command implements CommandConstructor {
     public data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup"> | SlashCommandSubcommandsOnlyBuilder;
     public cooldown?: number;
     public cooldowns?: Collection<string, number>;
-    public run: CommandRun;
+    public run: Run;
     constructor(query: CommandConstructor) {
         this.data = query.data;
         this.cooldown = query.cooldown ?? null;
