@@ -1,5 +1,5 @@
-import * as Discord from "discord.js";
-import * as path from "path";
+import Discord, { Collection, ClientEvents } from "discord.js";
+import path from "path";
 import DisTube, { DisTubeEvents } from "distube";
 import mongoose from "mongoose";
 import { promises as fs } from "fs";
@@ -9,8 +9,8 @@ import Event from "./event";
 import { REST, Routes } from "discord.js";
 
 export default class Client extends Discord.Client implements ClientConstructor {
-    public commands: Discord.Collection<string, Command> = new Discord.Collection();
-    public events: Discord.Collection<string, Event<keyof Discord.ClientEvents | keyof DisTubeEvents>> = new Discord.Collection();
+    public commands: Collection<string, Command> = new Collection();
+    public events: Collection<string, Event<keyof ClientEvents | keyof DisTubeEvents>> = new Collection();
     public options: ClientOptions;
     public distube?: DisTube = null;
     constructor(options: ClientOptions) {
@@ -52,7 +52,7 @@ export default class Client extends Discord.Client implements ClientConstructor 
                 const module = data.default ?? data;
                 if (module instanceof Command) this.commands.set(module.data.name, module);
                 else if (module instanceof Event) {
-                    if (!module.music) this.on(module.event as keyof Discord.ClientEvents, module.on.bind(null, this));
+                    if (!module.music) this.on(module.event as keyof ClientEvents, module.on.bind(null, this));
                     else this.distube.on(module.event as keyof DisTubeEvents, module.on.bind(null, this));
                 };
             };

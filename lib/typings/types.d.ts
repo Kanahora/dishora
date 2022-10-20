@@ -33,7 +33,7 @@ export interface EventConstructor<T extends keyof DisTubeEvents | keyof ClientEv
     on: On<T>;
 }
 export interface On<T extends keyof DisTubeEvents | keyof ClientEvents> {
-    (client: Client, ...args: DisTubeEvents[T & keyof DisTubeEvents] | ClientEvents[T & keyof ClientEvents]): any;
+    (client: Client, ...args: (ClientEvents & DisTubeEvents)[T]): any;
 }
 export interface MongoConstructor {
     query: FilterQuery<unknown>;
