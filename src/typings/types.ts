@@ -3,7 +3,8 @@ import Discord, {
     SlashCommandBuilder,
     SlashCommandSubcommandsOnlyBuilder,
     ChatInputCommandInteraction,
-    ClientEvents
+    ClientEvents,
+    IntentsBitField
 } from "discord.js";
 import Client from "../classes/client";
 import Command from "../classes/command";
@@ -13,7 +14,7 @@ import { FilterQuery, Model, Document } from "mongoose";
 // #region Client
 export interface ClientConstructor {
     commands: Collection<string, Command>;
-    options: ClientOptions;
+    options: Omit<ClientOptions, "intents"> & { intents: IntentsBitField; };
     distube?: DisTube;
 }
 export interface ClientOptions extends Discord.ClientOptions {

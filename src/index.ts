@@ -3,7 +3,7 @@ import Command from "./classes/command";
 import Event from "./classes/event";
 import Mongo from "./classes/mongo";
 import { MongoCache } from "./typings/types"
-import { Collection, SlashCommandBuilder } from 'discord.js';
+import { Collection, GatewayIntentBits, SlashCommandBuilder } from 'discord.js';
 export {
     Client,
     Command,
@@ -13,5 +13,6 @@ export {
 };
 export {
     Collection,
+    GatewayIntentBits,
     SlashCommandBuilder
 };

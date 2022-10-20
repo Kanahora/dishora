@@ -16,10 +16,10 @@ npm install dishora
 
 ### Initializing a new Client ###
 ```js
-const Dishora = require("dishora");
+const { Client, GatewayIntentBits } = require("dishora");
 
-const client = new Dishora.Client({
-    intents: ["Guilds"],
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds],
     token: "YOURTOKEN",
     mongo: "YOURMONGO",
     directories: {
@@ -32,9 +32,9 @@ client.init();
 
 ### Creating a new Event ###
 ```js
-const Dishora = require("dishora");
+const { Event } = require("dishora");
 
-const event = new Dishora.Event({
+const event = new Event({
     event: "ready",
     on: async function(client) {
         console.log("Online!");
@@ -44,11 +44,11 @@ const event = new Dishora.Event({
 
 ### Creating a new Command ###
 ```js
-const Dishora = require("dishora");
+const { Command, SlsahCommandBuilder } = require("dishora");
 const Discord = require("discord.js");
 
-const command = new Dishora.Command({
-    data: new Discord.SlashCommandBuilder()
+const command = new Command({
+    data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Get the client's response time."),
     run: async function(interaction) {
