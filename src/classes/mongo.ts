@@ -16,7 +16,7 @@ export default class Mongo<T> implements MongoConstructor<T> {
      * Deletes a single document similar to [db.collection.findOneAndDelete()](https://www.mongodb.com/docs/manual/reference/method/db.collection.findOneAndDelete/). 
      * @example new Mongo({ query: { id: "123" }, model: ... }).delete();
     */
-    public async delete() {
+    public async delete(): Promise<HydratedDocument<T>> {
         const data = await this.model.findOneAndDelete(this.query);
         this.cache?.delete(this.key);
         return data;
@@ -27,12 +27,12 @@ export default class Mongo<T> implements MongoConstructor<T> {
      * new Mongo({ query: { isHuman: true }, model: ... }).findOne();
      * new Mongo({ model: ... }).find({ isHuman: true });
     */
-    public async find(filter?: FilterQuery<T>) {
+    public async find(filter?: FilterQuery<T>): Promise<HydratedDocument<T> | HydratedDocument<T>[]> {
         let result: HydratedDocument<T> | HydratedDocument<T>[];
         if (filter) result = await this.model.find(filter);
         else {
             result = this.cache?.get(this.key) ?? await this.model.findOne(this.query) ?? await this.model.create(this.query);
-            if (!this.cache?.get(this.key)) this.cache?.set(this.key, result as HydratedDocument<T>);
+            this.cache?.set(this.key, result as HydratedDocument<T>);
         }
         return result;
     }
