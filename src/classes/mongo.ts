@@ -31,7 +31,7 @@ export default class Mongo<T> implements MongoConstructor<T> {
         let result: HydratedDocument<T> | HydratedDocument<T>[];
         if (filter) result = await this.model.find(filter);
         else {
-            result = this.cache?.get(this.key) ?? await this.model.findOne(this.query) ?? await this.model.create(this.query);
+            result = this.cache?.get(this.key) ?? await this.model.findOne(this.query) ?? await new this.model(this.query).save() as HydratedDocument<T>;
             this.cache?.set(this.key, result as HydratedDocument<T>);
         }
         return result;
@@ -41,7 +41,7 @@ export default class Mongo<T> implements MongoConstructor<T> {
      * @example new Mongo({ query: { id: "123" }, model: ... }).update({ isHuman: false });
      */
     public async update(query: UpdateQuery<T>): Promise<HydratedDocument<T>> {
-        const data = await this.model.findOneAndUpdate(this.query, query);
+        const data = await this.model.findOneAndUpdate(this.query, query, { upsert: true, new: true });
         this.cache?.set(this.key, data);
         return data;
     }
