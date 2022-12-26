@@ -3,9 +3,9 @@ A framework extension of the [discord.js](https://discord.js.org) library.
 This isn't for public use, there will not be a documentation or guide on how to use this framework.
 
 ## Requirements
-- [discord.js 14.5.0](https://www.npmjs.com/package/discord.js)
+- [discord.js 14.7.1](https://www.npmjs.com/package/discord.js)
 - [distube 4.0.4](https://www.npmjs.com/package/distube)
-- [mongoose 6.6.4](https://www.npmjs.com/package/mongoose)
+- [mongoose 6.8.1](https://www.npmjs.com/package/mongoose)
 
 ## Installation
 [Node.js 16.9.0](https://nodejs.org) or newer is required.

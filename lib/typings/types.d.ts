@@ -26,8 +26,11 @@ export interface CommandConstructor {
     cooldowns?: Collection<string, number>;
     run: Run;
 }
+interface CommandInteraction extends ChatInputCommandInteraction<"cached"> {
+    client: Client;
+}
 export interface Run {
-    (interaction: ChatInputCommandInteraction<"cached">): any;
+    (interaction: CommandInteraction): any;
 }
 export interface EventConstructor<T extends keyof DisTubeEvents | keyof ClientEvents> {
     event: T;
