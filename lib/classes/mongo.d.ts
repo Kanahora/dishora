@@ -6,13 +6,21 @@ export default class Mongo<T> implements MongoConstructor<T> {
     query: FilterQuery<T>;
     private key?;
     constructor(params: MongoConstructor<T>);
-    delete(): Promise<HydratedDocument<T, {}, {}>>;
     /**
-     * Find a document or an array of documents similar to [Model.findOne](https://mongoosejs.com/docs/api.html#model_Model-findOne). Passing in a parameter will return an array of documents that matches the filter similar to [Model.find](https://mongoosejs.com/docs/api.html#model_Model-find).
-     * @example
-     * new Mongo({ id: "123" }).findOne();
-     * new Mongo().find({ isHuman: true });
+     * Deletes a single document similar to [db.collection.findOneAndDelete()](https://www.mongodb.com/docs/manual/reference/method/db.collection.findOneAndDelete/).
+     * @example new Mongo({ query: { id: "123" }, model: ... }).delete();
     */
-    find(filter?: FilterQuery<T>): Promise<HydratedDocument<T, {}, {}> | HydratedDocument<T, {}, {}>[]>;
+    delete(): Promise<HydratedDocument<T>>;
+    /**
+     * Find a document or an array of documents similar to [db.collection.findOne()](https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/). Passing in a parameter will return an array of documents that matches the filter similar to [db.collection.find()](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/).
+     * @example
+     * new Mongo({ query: { isHuman: true }, model: ... }).findOne();
+     * new Mongo({ model: ... }).find({ isHuman: true });
+    */
+    find(filter?: FilterQuery<T>): Promise<HydratedDocument<T> | HydratedDocument<T>[]>;
+    /**
+     * Updates a single document similar to [db.collection.finOneAndUpdate()](https://www.mongodb.com/docs/manual/reference/method/db.collection.findOneAndUpdate/).
+     * @example new Mongo({ query: { id: "123" }, model: ... }).update({ isHuman: false });
+     */
     update(query: UpdateQuery<T>): Promise<HydratedDocument<T>>;
 }
