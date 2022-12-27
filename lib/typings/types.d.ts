@@ -26,7 +26,7 @@ export interface CommandConstructor {
     cooldowns?: Collection<string, number>;
     run: Run;
 }
-interface CommandInteraction extends ChatInputCommandInteraction<"cached"> {
+export interface CommandInteraction extends ChatInputCommandInteraction<"cached"> {
     client: Client;
 }
 export interface Run {
